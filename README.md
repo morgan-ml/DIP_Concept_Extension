@@ -1,1 +1,3 @@
 # DIP_Concept_Extension
+
+Sample of the code developed for my dissertation. All in all, there are 59 notebooks. Some of them have different functions, but the vast majority of them are variations of the same code developed over the past 3 months. I have only uploaded 1 example notebook for now at my supervisor's request. It is rather a mess. Feel free to contact me with any questions. There are some comments, but not enough to make the code intelligible, especially because most of the cells are optional or commented out blocks of old code or code not applicable to the versions the uploaded file is meant to service.
