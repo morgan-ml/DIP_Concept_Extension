@@ -1,0 +1,197 @@
+SNA_AutoEnc_1.0
+	No major changes
+	Comments added (see comments for future work)
+	Training dataset and # epochs reduced for testing
+	
+SNA_Unet_0.2
+	Fixed saved model loading (missing)
+	Added testing output to training set building
+	
+SNA_Unet_0.3
+	Includes (1,1) transpose conv layer
+	Working Unet for single images
+	Needs a lot of cleaning up
+	
+SNA_Unet_1.0
+	Without (1,1) transpose conv layer
+	Cleanup
+	Added monitor metric to model.compile() (Unet.compile())/
+	Added earlystopping callback
+	
+SNA_Unet_1.1
+	# replace maxpooling with convolutions with stride = 2, also more informed downsampling
+	# NEED a convolution bottom of U. This is the most compressed version of your input. It builds the latent space.
+	Lowered total number of filters (removed the 32 filter convolution at either end deeper than the 64)
+	model checkpoints: save weights only, every 10 epochs now instead of best
+	still need to go back and fix the normalisation
+	
+SNA_Unet_1.2
+	Duplicate to run different lines
+	Might have changed batch size to 4
+	
+SNA_Unet_1.3
+	Changed normalization to customizable (for [-1,1])
+	Added noisy test dataset
+		Gaussian noise added prior to normalization with same
+	Working on GPU
+	
+SNA_Unet_1.4
+	the model.fit broke after installing pydot and graphviz
+	Try copying over environment I saved last night
+	Does not have to do with the skip connections
+	conda list --revisions
+	conda install --rev 12
+	May need to uninstall with pip from cmd
+	https://stackoverflow.com/questions/61707730/tensorflow-warning-could-not-load-dynamic-library-cupti64-101-dll-dlerror
+	Nick ‘cudart64_100.dll’ from cuda download
+	jupyter notebook "C:\Users\fmdel\OneDrive - University of Leeds\2021 Sem 1\HALLIBURTON\Code\SNA_Unet_1.4_testing.ipynb"
+	
+SNA_Unet_1.5
+	Don't trust the loss against test set. Only the first channel was working
+	
+SNA_Unet_1.6
+	Messing around with channel input, not sure if functional this version
+	Only 1 skip connection
+	
+SNA_Unet_1.7
+	2 skip connections
+	4 channel input working
+	Also saves test and train data
+	Elapsed time: 12417.962851285934
+	BOTH SKIP CONNETIONS
+	
+
+SNA_Unet_1.8
+	No skip connections
+	I believe results should be the same as any of the above with working channel input, but just use this. Don't trust saved models before 1.7 that supposedly use channelled input (or test the prediction on 2nd channel if you do. Only 1st channel of training data was being filled earlier)
+	NO SKIP CONNETIONS
+	
+SNA_Unet_1.9
+	1 lower skip connection
+	Same as 1.6 but functional
+	Added histogram_freq=1 to TB callback
+	BOTTOM SKIP CONNETION
+	
+SNA_Unet_1.10
+	Back to adding synthetic noise (noise_factor = 1)
+	Changed data slicing to happen right after reading
+	NOISE ADDED AFTER NORMALIZATION
+	BOTTOM SKIP CONNETION
+	
+SNA_Unet_2.0
+	Removed +1 from prep data
+	Bad result: output is 4 channels
+	NO SKIP CONNECTIONS
+
+SNA_Unet_2.1
+	Trim all lines to same shape
+	L2 loss still
+	NO SKIP CONNECTIONS
+	
+SNA_Unet_2.2
+	
+	BOTTOM SKIP CONNETION
+	L1 loss MEAN ABSOLUTE ERROR
+	
+Loader_1.9
+	Data truncation prior to slicing for compatibility
+	While loop should have always been up to numimg + i_start. Changed.
+	Made training/test dataset generation a callable function
+		Remember I have not been seeding noise. Maybe why difference panels show leakage
+		FIXED TO INCLUDE SEEDED NOISE IN FUNCTION
+			Theoretically if I end up going with adding noise after can take make 3D noise array
+		
+SNA_Unet_2.3
+	BOTTOM SKIP CONNECTION
+	L2 loss
+	Compare to 2.2
+
+SNA_Unet_2.4
+	BOTH SKIP CONNECTIONS
+	L1 Loss
+	
+SNA_Unet_2.5
+	
+	Bottom Skip Connection
+	L1 loss
+	Added noise (normed then summed)  # no I didn’t
+		Doesn't work, even if noise scaled to minmax of data
+		Elaradat histogram looks far from gaussian
+	Edited prepdata noise addition to reflect this^  # no I didn’t
+	
+SNA_Unet_1.9.2
+	Added noisy validation (is this right?)
+		probably not
+		
+SNA_Unet_2.4_LOADER
+	need to change writefig model_differences_rgb to image_array
+	Added functions to do stuff
+	Saves predicted images
+		Good images to denoise: 67?, 68, 69, 70, 71
+			3, 4, 
+			60 good to show salt and pepper
+		Gain = 10
+		64, 66 is a different issue
+		Use 65 to show no damage to signal?
+	
+SNA_Unet_2.6
+	Setting seed every time prepdata is called is not appropriate for noisy training data if also noisy test data
+	
+SNA_Unet_4.0
+	Deep Image Priors: 1 network per 1 image
+	3 Generators, function version (3rd) working
+	A detailed example of data generators with Keras (stanford.edu)
+	Keras data generators and how to use them | by Ilya Michlin | Towards Data Science
+	Data timesamples quartered to fit in gpu
+	Changed gif tagging
+	Changed some data.shape[]'s to x_test.shape's. Should just make image dims variable
+	
+SNA_Unet_5.0
+	Ran with num_std_clip = 100 so as not to remove any data (assume you have done)
+	Bottom skip connection
+	L2 norm
+	Mae, mse metric
+	# Csvlog wasn’t working so changed to append=True 
+	seisspace speckled noise add noise module
+	Num_std_clip = 9 
+	
+SNA_Unet_5.1
+	1 channel
+	Num_std_clip = 8 
+	L2 norm
+	Stopped saving input_data_scaled separately
+	If you minmax scale to very similar amplitudes it will have a hard time recovering that relation, they will contribute minorly to the loss
+		Maybe a good thing? Yes. I'll go with that
+		
+SNA_Unet_5.2
+	5.0 duplicate but with working csv and num_std_clip = 8
+	L2 norm
+SNA_Unet_5.3
+	L1 norm
+	num_std_clip = 8
+	
+SNA_Unet_5.*.2
+	5.1, 5.2, 5.3 re-run to normalize output prior to learning
+	
+SNA_Unet_5.1.3
+	5.1 and 5.1.2 were erroneously predicting the 4th channel of 5.2/5.3 prediction, but plots were not taking that into account. Truncated last 3 from 5.1 dataset loading to avoid confusion. This shouldn't affect training, but just to be safe
+	
+SNA_Unet_5.4,5,6
+	5.1,2,3 output to output
+
+SNA_Unet_5.*.2_LOADER
+	Allows prediction of raw data, labelled with suffix ypred
+	This is going to take some serious work to sort out the predict, diffto, x_test, y_test mess
+		
+
+PLAN
+	Functionality for Varying size lines (make use of all Elaradat data, regardless of trimming to fit GPU RAM)
+	Should change input/output to use numchan
+	Zoom in
+	Trim time?
+	Spectra. Cant do FK on all datasets, can do power 
+	Zoom in on spike
+	try same panels with and without noisy test
+	
+Reboot: 29, 21
+working on 20
